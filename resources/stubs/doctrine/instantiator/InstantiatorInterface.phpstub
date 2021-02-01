@@ -1,0 +1,16 @@
+<?php
+
+namespace Doctrine\Instantiator;
+
+use Doctrine\Instantiator\Exception\ExceptionInterface;
+
+interface InstantiatorInterface
+{
+    /**
+     * @psalm-template T of object
+     * @param class-string<T> $class
+     * @return T
+     * @throws ExceptionInterface
+     */
+    public function instantiate(string $class): object;
+}
