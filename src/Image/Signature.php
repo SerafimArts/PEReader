@@ -17,22 +17,22 @@ namespace Serafim\PEReader\Image;
 final class Signature
 {
     /**
-     * @var int
+     * @var positive-int
      */
-    public const IMAGE_DOS_SIGNATURE = 0x5A4D;
+    public const IMAGE_DOS_SIGNATURE = 0x5A_4D;
 
     /**
-     * @var int
+     * @var positive-int
      */
-    public const IMAGE_OS2_SIGNATURE = 0x454E;
+    public const IMAGE_OS2_SIGNATURE = 0x45_4E;
 
     /**
-     * @var int
+     * @var positive-int
      */
-    public const IMAGE_OS2_SIGNATURE_LE = 0x454C;
+    public const IMAGE_OS2_SIGNATURE_LE = 0x45_4C;
 
     /**
-     * @var int
+     * @var positive-int
      */
-    public const IMAGE_NT_SIGNATURE = 0x00004550;
+    public const IMAGE_NT_SIGNATURE = 0x00_00_45_50;
 }
