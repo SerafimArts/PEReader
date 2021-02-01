@@ -2,7 +2,7 @@
 
 > Note: WIP
 
-See: https://ru.wikipedia.org/wiki/Portable_Executable
+See: https://en.wikipedia.org/wiki/Portable_Executable
 
 TL;DR: This means that this implementation reads data from the following files:
 
