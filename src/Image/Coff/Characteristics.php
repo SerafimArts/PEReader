@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\PEReader\Image;
+namespace Serafim\PEReader\Image\Coff;
 
 final class Characteristics
 {
@@ -18,7 +18,7 @@ final class Characteristics
      *
      * @var positive-int|0
      */
-    public int $imageFileRelocsStripped = 0;
+    public int $imageFileRelocationsStripped = 0;
 
     /**
      * 0x0002  File is executable
@@ -39,7 +39,7 @@ final class Characteristics
      *
      * @var positive-int|0
      */
-    public int $imageFileLocalSymsStripped = 0;
+    public int $imageFileLocalSymbolsStripped = 0;
 
     /**
      * 0x0010  Aggressively trim working set

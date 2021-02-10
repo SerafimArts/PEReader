@@ -18,9 +18,7 @@ require __DIR__ . '/vendor/autoload.php';
 $file = __DIR__ . '/resources/php.exe';
 \is_file($file) || \copy(\PHP_BINARY, $file);
 
-$reader = new Reader();
 
-// Read
-foreach ($reader->read(new FileStream($file)) as $struct) {
-    dump($struct);
-}
+// Reading
+$image = (new Reader())->read(new FileStream($file));
+dump($image);

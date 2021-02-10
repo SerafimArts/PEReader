@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Serafim\PEReader\Image\OptionalHeader;
 
 use JetBrains\PhpStorm\ExpectedValues;
-use Serafim\PEReader\Image\Subsystem;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
 use Serafim\PEReader\Marshaller\Type\UInt16;
 use Serafim\PEReader\Marshaller\Type\UInt32;

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\PEReader\Image;
+namespace Serafim\PEReader\Image\Coff;
 
 use JetBrains\PhpStorm\ExpectedValues;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
@@ -60,6 +60,8 @@ final class FileHeader
 
     /**
      * TODO BIT mapping to Characteristics (1 bit per field)
+     *
+     * @see Characteristics
      *
      * @var positive-int|0
      */

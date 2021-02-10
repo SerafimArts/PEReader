@@ -17,7 +17,7 @@ interface ReaderInterface
 {
     /**
      * @param StreamInterface $stream
-     * @return iterable<object>
+     * @return Image
      */
-    public function read(StreamInterface $stream): iterable;
+    public function read(StreamInterface $stream): Image;
 }

@@ -14,13 +14,14 @@ namespace Serafim\PEReader;
 use Doctrine\Instantiator\Exception\ExceptionInterface;
 use Doctrine\Instantiator\InstantiatorInterface;
 use JetBrains\PhpStorm\NoReturn;
-use Serafim\PEReader\Image\Dos\Header as DosHeader;
-use Serafim\PEReader\Image\ImageSignature;
-use Serafim\PEReader\Image\Nt\Header as NtHeader;
+use Serafim\PEReader\Image\CoffHeader as NtHeader;
+use Serafim\PEReader\Image\DosHeader as DosHeader;
 use Serafim\PEReader\Image\OptionalHeader\DataDirectories;
 use Serafim\PEReader\Image\OptionalHeader\OptionalHeader32;
 use Serafim\PEReader\Image\OptionalHeader\OptionalHeader64;
 use Serafim\PEReader\Image\OptionalHeader\OptionalHeaderSignature;
+use Serafim\PEReader\Image\SectionHeader;
+use Serafim\PEReader\Image\Signature;
 use Serafim\PEReader\Marshaller\Bin\Converter;
 use Serafim\PEReader\Marshaller\Marshaller;
 use Serafim\PEReader\Marshaller\MarshallerInterface;
@@ -50,10 +51,8 @@ final class Reader implements ReaderInterface
      * @param mixed ...$args
      */
     #[NoReturn]
-    private function error(
-        string $message,
-        ...$args
-    ): void {
+    private function error(string $message, ...$args): void
+    {
         throw new \LogicException(\vsprintf($message, $args));
     }
 
@@ -61,16 +60,24 @@ final class Reader implements ReaderInterface
      * {@inheritDoc}
      * @throws \Throwable
      */
-    public function read(StreamInterface $stream): iterable
+    public function read(StreamInterface $stream): Image
     {
+        $image = new Image();
+
         // Read MS DOS header
-        yield $dos = $this->readDosHeader($stream);
+        $image->dos = $this->readDosHeader($stream);
 
         // Move to NT header
-        $stream->move($dos->addressOfNewExeHeader);
+        $stream->move($image->dos->addressOfNewExeHeader);
 
         // Read NT header
-        yield $nt = $this->readNtHeader($stream);
+        $image->coff = $this->readNtHeader($stream);
+
+        for ($i = 0; $i < $image->coff->fileHeader->numberOfSections; ++$i) {
+            $image->sections[] = $this->marshaller->marshal(SectionHeader::class, $stream);
+        }
+
+        return $image;
     }
 
     /**
@@ -82,14 +89,16 @@ final class Reader implements ReaderInterface
     {
         $nt = $this->marshaller->marshal(NtHeader::class, $stream);
 
-        if ($nt->signature !== ImageSignature::IMAGE_NT_SIGNATURE) {
+        if ($nt->signature !== Signature::IMAGE_NT_SIGNATURE) {
             $this->error('Invalid NT signature "0x%X"', $nt->signature);
         }
 
-        $nt->optionalHeader = match ($header = Converter::toUInt16(Lookahead::read($stream, 2))) {
+        $nt->optionalHeader = match ($signature = Converter::toUInt16(Lookahead::read($stream, 2))) {
             OptionalHeaderSignature::PE64 => $this->marshaller->marshal(OptionalHeader64::class, $stream),
             OptionalHeaderSignature::PE32 => $this->marshaller->marshal(OptionalHeader32::class, $stream),
-            default => throw new \LogicException(\sprintf('Invalid or unsupported optional header signature "0x%X".', $header))
+            default => throw new \LogicException(
+                \sprintf('Invalid or unsupported optional header signature "0x%X".', $signature)
+            )
         };
 
         /** @var positive-int|0 $bytes */
@@ -111,7 +120,7 @@ final class Reader implements ReaderInterface
     {
         $dos = $this->marshaller->marshal(DosHeader::class, $stream);
 
-        if ($dos->signature !== ImageSignature::IMAGE_DOS_SIGNATURE) {
+        if ($dos->signature !== Signature::IMAGE_DOS_SIGNATURE) {
             $this->error('Invalid DOS signature "0x%X"', $dos->signature);
         }
 

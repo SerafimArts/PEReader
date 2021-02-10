@@ -9,11 +9,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\PEReader\Image\Nt;
+namespace Serafim\PEReader\Image;
 
 use JetBrains\PhpStorm\ExpectedValues;
-use Serafim\PEReader\Image\FileHeader;
-use Serafim\PEReader\Image\ImageSignature;
+use Serafim\PEReader\Image\Coff\FileHeader;
 use Serafim\PEReader\Image\OptionalHeader\OptionalHeader32;
 use Serafim\PEReader\Image\OptionalHeader\OptionalHeader64;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
@@ -21,9 +20,9 @@ use Serafim\PEReader\Marshaller\Type\Struct;
 use Serafim\PEReader\Marshaller\Type\UInt32;
 
 /**
- * @psalm-import-type SignatureType from ImageSignature
+ * @psalm-import-type SignatureType from Signature
  */
-final class Header
+final class CoffHeader
 {
     /**
      * The file can be identified by the ASCII string "MZ" (hexadecimal: 4D 5A)
@@ -31,8 +30,8 @@ final class Header
      *
      * @var SignatureType
      */
-    #[UInt32(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: ImageSignature::class)]
-    public int $signature = ImageSignature::IMAGE_NT_SIGNATURE;
+    #[UInt32(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: Signature::class)]
+    public int $signature = Signature::IMAGE_NT_SIGNATURE;
 
     /**
      * @var FileHeader

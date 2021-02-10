@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\PEReader\Image;
+namespace Serafim\PEReader\Image\OptionalHeader;
 
 /**
  * @psalm-type SubsystemType = Subsystem::*

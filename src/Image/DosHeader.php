@@ -9,19 +9,18 @@
 
 declare(strict_types=1);
 
-namespace Serafim\PEReader\Image\Dos;
+namespace Serafim\PEReader\Image;
 
 use JetBrains\PhpStorm\ExpectedValues;
-use Serafim\PEReader\Image\ImageSignature;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
 use Serafim\PEReader\Marshaller\Type\ArrayType;
 use Serafim\PEReader\Marshaller\Type\Int32;
 use Serafim\PEReader\Marshaller\Type\UInt16;
 
 /**
- * @psalm-import-type SignatureType from ImageSignature
+ * @psalm-import-type SignatureType from Signature
  */
-final class Header
+final class DosHeader
 {
     /**
      * The file can be identified by the ASCII string "MZ" (hexadecimal: 4D 5A)
@@ -29,8 +28,8 @@ final class Header
      *
      * @var SignatureType
      */
-    #[UInt16(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: ImageSignature::class)]
-    public int $signature = ImageSignature::IMAGE_DOS_SIGNATURE;
+    #[UInt16(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: Signature::class)]
+    public int $signature = Signature::IMAGE_DOS_SIGNATURE;
 
     /**
      * Bytes on last page of file
@@ -145,7 +144,7 @@ final class Header
     private array $reserved = [0, 0, 0, 0];
 
     /**
-     * OEM identifier (for {@see Header::$oemInfo})
+     * OEM identifier (for {@see DosHeader::$oemInfo})
      *
      * @var positive-int|0
      */
