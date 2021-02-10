@@ -49,10 +49,12 @@ class Transaction implements StreamInterface
     public static function create(StreamInterface $stream, \Closure $then): mixed
     {
         $transaction = self::from($stream);
-        $result = $then($transaction);
-        $transaction->rollback();
 
-        return $result;
+        try {
+            return $then($transaction);
+        } finally {
+            $transaction->rollback();
+        }
     }
 
     /**

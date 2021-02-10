@@ -51,7 +51,7 @@ abstract class Stream implements StreamInterface
     }
 
     /**
-     * @param positive-int $bytes
+     * @param positive-int|0 $bytes
      * @return string
      */
     public function read(int $bytes): string
@@ -60,7 +60,7 @@ abstract class Stream implements StreamInterface
 
         $result = \fread($this->stream, $bytes);
 
-        return $result . \str_repeat("\0", $bytes - \strlen($result));
+        return $result . \str_repeat("\x00", $bytes - \strlen($result));
     }
 
     /**

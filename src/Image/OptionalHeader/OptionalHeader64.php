@@ -19,7 +19,7 @@ use Serafim\PEReader\Marshaller\Type\UInt64;
 use Serafim\PEReader\Marshaller\Type\UInt8;
 
 /**
- * @psalm-import-type SignatureType from Signature
+ * @psalm-import-type SignatureType from OptionalHeaderSignature
  * @psalm-import-type SubsystemType from Subsystem
  */
 class OptionalHeader64
