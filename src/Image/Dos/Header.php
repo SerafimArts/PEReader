@@ -12,14 +12,14 @@ declare(strict_types=1);
 namespace Serafim\PEReader\Image\Dos;
 
 use JetBrains\PhpStorm\ExpectedValues;
-use Serafim\PEReader\Image\Signature;
+use Serafim\PEReader\Image\ImageSignature;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
 use Serafim\PEReader\Marshaller\Type\ArrayType;
 use Serafim\PEReader\Marshaller\Type\Int32;
 use Serafim\PEReader\Marshaller\Type\UInt16;
 
 /**
- * @psalm-import-type SignatureType from Signature
+ * @psalm-import-type SignatureType from ImageSignature
  */
 final class Header
 {
@@ -29,8 +29,8 @@ final class Header
      *
      * @var SignatureType
      */
-    #[UInt16(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: Signature::class)]
-    public int $signature = Signature::IMAGE_DOS_SIGNATURE;
+    #[UInt16(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: ImageSignature::class)]
+    public int $signature = ImageSignature::IMAGE_DOS_SIGNATURE;
 
     /**
      * Bytes on last page of file

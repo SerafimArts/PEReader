@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace Serafim\PEReader\Image;
 
 /**
- * @psalm-type SignatureType = Signature::IMAGE_*
+ * @psalm-type SignatureType = ImageSignature::IMAGE_*
  */
-final class Signature
+final class ImageSignature
 {
     /**
      * @var positive-int

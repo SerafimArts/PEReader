@@ -12,15 +12,16 @@ declare(strict_types=1);
 namespace Serafim\PEReader\Image\Nt;
 
 use JetBrains\PhpStorm\ExpectedValues;
-use JetBrains\PhpStorm\Pure;
 use Serafim\PEReader\Image\FileHeader;
-use Serafim\PEReader\Image\Signature;
+use Serafim\PEReader\Image\ImageSignature;
+use Serafim\PEReader\Image\OptionalHeader\OptionalHeader32;
+use Serafim\PEReader\Image\OptionalHeader\OptionalHeader64;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
 use Serafim\PEReader\Marshaller\Type\Struct;
 use Serafim\PEReader\Marshaller\Type\UInt32;
 
 /**
- * @psalm-import-type SignatureType from Signature
+ * @psalm-import-type SignatureType from ImageSignature
  */
 final class Header
 {
@@ -30,8 +31,8 @@ final class Header
      *
      * @var SignatureType
      */
-    #[UInt32(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: Signature::class)]
-    public int $signature = Signature::IMAGE_NT_SIGNATURE;
+    #[UInt32(endianness: Endianness::ENDIAN_LITTLE), ExpectedValues(valuesFromClass: ImageSignature::class)]
+    public int $signature = ImageSignature::IMAGE_NT_SIGNATURE;
 
     /**
      * @var FileHeader
@@ -40,10 +41,16 @@ final class Header
     public FileHeader $fileHeader;
 
     /**
+     * @var OptionalHeader32|OptionalHeader64
+     */
+    public OptionalHeader32|OptionalHeader64 $optionalHeader;
+
+    /**
      * Header constructor.
      */
     public function __construct()
     {
         $this->fileHeader = new FileHeader();
+        $this->optionalHeader = new OptionalHeader64();
     }
 }

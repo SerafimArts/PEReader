@@ -58,11 +58,13 @@ abstract class Stream implements StreamInterface
     {
         assert($bytes > 0);
 
-        return \fread($this->stream, $bytes);
+        $result = \fread($this->stream, $bytes);
+
+        return $result . \str_repeat("\0", $bytes - \strlen($result));
     }
 
     /**
-     * @param int $offset
+     * {@inheritDoc}
      */
     public function move(int $offset): int
     {
