@@ -183,7 +183,7 @@ Serafim\PEReader\Image {#20
     }
   }
   +sections: Serafim\PEReader\Image\SectionHeaders {#27
-    -headers: array:7 [
+    -headers: array:6 [
       0 => Serafim\PEReader\Image\SectionHeader {#24
         +name: ".text"
         +misc: 47788
@@ -255,18 +255,6 @@ Serafim\PEReader\Image {#20
         +numberOfRelocations: 0
         +numberOfLineNumbers: 0
         +characteristics: 1107296320
-      }
-      6 => Serafim\PEReader\Image\SectionHeader {#65
-        +name: ""
-        +misc: 0
-        +virtualAddress: 0
-        +sizeOfRawData: 0
-        +pointerToRawData: 0
-        +pointerToRelocations: 0
-        +pointerToLineNumbers: 0
-        +numberOfRelocations: 0
-        +numberOfLineNumbers: 0
-        +characteristics: 0
       }
     ]
   }
