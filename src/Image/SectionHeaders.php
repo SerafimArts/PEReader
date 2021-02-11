@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Serafim\PEReader\Image;
 
 /**
- * @template-extends \IteratorAggregate<positive-int, SectionHeader>
+ * @template-implements \IteratorAggregate<positive-int, SectionHeader>
  */
 class SectionHeaders implements \IteratorAggregate, \Countable
 {
