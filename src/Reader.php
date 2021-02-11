@@ -80,9 +80,7 @@ final class Reader implements ReaderInterface
 
         // Read Section headers
         for ($i = 0; $i <= $image->coff->fileHeader->numberOfSections; ++$i) {
-            $header = $this->marshaller->marshal(SectionHeader::class, $stream);
-
-            $image->sections->add($header->withStream($stream));
+            $image->sections->add($this->marshaller->marshal(SectionHeader::class, $stream));
         }
 
         // Read EAT

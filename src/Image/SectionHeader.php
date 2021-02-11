@@ -84,34 +84,14 @@ final class SectionHeader
     public int $characteristics = 0;
 
     /**
-     * @var StreamInterface|null
-     */
-    private ?StreamInterface $stream = null;
-
-    /**
      * @param StreamInterface $stream
-     * @return $this
-     */
-    public function withStream(StreamInterface $stream): self
-    {
-        $self = clone $this;
-        $self->stream = $stream;
-
-        return $self;
-    }
-
-    /**
      * @return StreamInterface
      */
-    public function read(): StreamInterface
+    public function read(StreamInterface $stream): StreamInterface
     {
-        if ($this->stream === null) {
-            return StringStream::empty();
-        }
+        $stream->move($this->pointerToRawData);
 
-        $this->stream->move($this->pointerToRawData);
-
-        return new Slice($this->stream, $this->sizeOfRawData);
+        return new Slice($stream, $this->sizeOfRawData);
     }
 
     /**
