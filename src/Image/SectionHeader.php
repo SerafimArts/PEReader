@@ -15,12 +15,17 @@ use Serafim\PEReader\Marshaller\Bin\Endianness;
 use Serafim\PEReader\Marshaller\Type\AnsiString;
 use Serafim\PEReader\Marshaller\Type\UInt16;
 use Serafim\PEReader\Marshaller\Type\UInt32;
-use Serafim\PEReader\Marshaller\Type\UInt8;
+use Serafim\PEReader\Stream\Slice;
+use Serafim\PEReader\Stream\StreamInterface;
+use Serafim\PEReader\Stream\StringStream;
 
 final class SectionHeader
 {
+    /**
+     * @var string
+     */
     #[AnsiString(length: 8)]
-    public string $name = "\0\0\0\0\0\0\0\0";
+    public string $name = '';
 
     /**
      * @var positive-int|0
@@ -77,4 +82,54 @@ final class SectionHeader
      */
     #[UInt32(endianness: Endianness::ENDIAN_LITTLE)]
     public int $characteristics = 0;
+
+    /**
+     * @var StreamInterface|null
+     */
+    private ?StreamInterface $stream = null;
+
+    /**
+     * @param StreamInterface $stream
+     * @return $this
+     */
+    public function withStream(StreamInterface $stream): self
+    {
+        $self = clone $this;
+        $self->stream = $stream;
+
+        return $self;
+    }
+
+    /**
+     * @return StreamInterface
+     */
+    public function read(): StreamInterface
+    {
+        if ($this->stream === null) {
+            return StringStream::empty();
+        }
+
+        $this->stream->move($this->pointerToRawData);
+
+        return new Slice($this->stream, $this->sizeOfRawData);
+    }
+
+    /**
+     * @param int $virtualAddress
+     * @return bool
+     */
+    public function contains(int $virtualAddress): bool
+    {
+        return $virtualAddress >= $this->virtualAddress &&
+            $virtualAddress <= $this->virtualAddress + $this->sizeOfRawData;
+    }
+
+    /**
+     * @param int $virtualAddress
+     * @return int
+     */
+    public function toPhysical(int $virtualAddress): int
+    {
+        return $this->pointerToRawData + $virtualAddress - $this->virtualAddress;
+    }
 }

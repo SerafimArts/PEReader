@@ -24,4 +24,12 @@ final class StringStream extends Stream
 
         $this->openStream($stream);
     }
+
+    /**
+     * @return static
+     */
+    public static function empty(): self
+    {
+        return new self('');
+    }
 }

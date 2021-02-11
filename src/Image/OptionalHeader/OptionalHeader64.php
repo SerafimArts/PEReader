@@ -22,7 +22,7 @@ use Serafim\PEReader\Marshaller\Type\UInt8;
  * @psalm-import-type SignatureType from OptionalHeaderSignature
  * @psalm-import-type SubsystemType from Subsystem
  */
-class OptionalHeader64
+final class OptionalHeader64
 {
     /**
      * The unsigned integer that identifies the state of the image file.
