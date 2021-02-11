@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Serafim\PEReader\Image;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * @template-implements \IteratorAggregate<positive-int, SectionHeader>
  */
@@ -41,6 +43,7 @@ class SectionHeaders implements \IteratorAggregate, \Countable
      * @param int $virtualAddress
      * @return SectionHeader|null
      */
+    #[Pure]
     public function findByVirtualAddress(int $virtualAddress): ?SectionHeader
     {
         foreach ($this->headers as $header) {
@@ -56,6 +59,7 @@ class SectionHeaders implements \IteratorAggregate, \Countable
      * @param int $virtualAddress
      * @return int|null
      */
+    #[Pure]
     public function virtualAddressToPhysical(int $virtualAddress): ?int
     {
         return $this->findByVirtualAddress($virtualAddress)?->toPhysical($virtualAddress);
@@ -89,6 +93,7 @@ class SectionHeaders implements \IteratorAggregate, \Countable
     /**
      * @return int
      */
+    #[Pure]
     public function count(): int
     {
         return \count($this->headers);

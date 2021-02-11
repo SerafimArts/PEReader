@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Serafim\PEReader\Image;
 
+use JetBrains\PhpStorm\Pure;
 use Serafim\PEReader\Marshaller\Bin\Endianness;
 use Serafim\PEReader\Marshaller\Type\AnsiString;
 use Serafim\PEReader\Marshaller\Type\UInt16;
@@ -98,6 +99,7 @@ final class SectionHeader
      * @param int $virtualAddress
      * @return bool
      */
+    #[Pure]
     public function contains(int $virtualAddress): bool
     {
         return $virtualAddress >= $this->virtualAddress &&
@@ -108,6 +110,7 @@ final class SectionHeader
      * @param int $virtualAddress
      * @return int
      */
+    #[Pure]
     public function toPhysical(int $virtualAddress): int
     {
         return $this->pointerToRawData + $virtualAddress - $this->virtualAddress;

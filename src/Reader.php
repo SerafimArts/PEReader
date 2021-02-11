@@ -79,7 +79,7 @@ final class Reader implements ReaderInterface
         $image->coff = $this->readCoffHeader($stream);
 
         // Read Section headers
-        for ($i = 0; $i <= $image->coff->fileHeader->numberOfSections; ++$i) {
+        for ($i = 0; $i < $image->coff->fileHeader->numberOfSections; ++$i) {
             $image->sections->add($this->marshaller->marshal(SectionHeader::class, $stream));
         }
 
